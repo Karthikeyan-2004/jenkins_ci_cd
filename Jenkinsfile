@@ -7,10 +7,10 @@ pipeline {
 
   stages {
     stage('Clone') {
-      steps {
-        git 'https://github.com/your-username/hello-world-ci.git'
-      }
-    }
+            steps {
+                git credentialsId: 'github_seccred', url: 'git@github.com:Karthikeyan-2004/jenkins_ci_cd.git'
+            }
+        }
 
     stage('Install Dependencies') {
       steps {
