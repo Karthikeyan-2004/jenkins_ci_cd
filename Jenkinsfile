@@ -8,7 +8,7 @@ pipeline {
   stages {
     stage('Clone') {
             steps {
-                git credentialsId: 'github_seccred', url: 'git@github.com:Karthikeyan-2004/jenkins_ci_cd.git'
+                git credentialsId: 'github_seccred', url: 'https://github.com/Karthikeyan-2004/jenkins_ci_cd.git'
             }
         }
 
