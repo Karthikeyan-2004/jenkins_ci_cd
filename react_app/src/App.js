@@ -1,7 +1,7 @@
 function App() {
   return (
     <div className="App">
-      <h1>Hello World - CI/CD with Jenkins changes here</h1>
+      <h1>Hello World - CI/CD with Jenkins</h1>
     </div>
   );
 }
