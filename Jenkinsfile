@@ -22,13 +22,17 @@ pipeline {
 
     stage('Build') {
       steps {
-        sh 'npm run build'
+        dir('react_app'){
+          sh 'npm run build'
+        }
       }
     }
 
     stage('Test') {
       steps {
-        sh 'npm test -- --watchAll=false'
+        dir('react_app'){
+          sh 'npm test -- --watchAll=false'
+        }
       }
     }
 
