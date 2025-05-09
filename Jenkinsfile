@@ -51,9 +51,21 @@ pipeline {
       }
     }
 
-    stage('Deploy') {
+        stage('Deploy') {
       steps {
-        echo 'Deployment simulated or handled by next system.'
+        script {
+          // Stop any container using port 3010
+          sh '''
+            CONTAINER_ID=$(docker ps --filter "publish=3010" --format "{{.ID}}")
+            if [ ! -z "$CONTAINER_ID" ]; then
+              docker stop $CONTAINER_ID
+              docker rm $CONTAINER_ID
+            fi
+          '''
+
+          // Run the new container
+          sh "docker run -d -p 3010:3010 ${env.DOCKER_IMAGE}"
+        }
       }
     }
   }
