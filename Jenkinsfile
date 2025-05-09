@@ -2,19 +2,23 @@ pipeline {
   agent any
 
   tools {
-    nodejs 'Node23' // name you gave in Global Tools
+    nodejs 'Node23' 
+  }
+
+  environment {
+    DOCKER_IMAGE = 'karthikeyanr17/cicd'
   }
 
   stages {
     stage('Clone') {
-            steps {
-                git credentialsId: 'github_seccred', url: 'https://github.com/Karthikeyan-2004/jenkins_ci_cd.git'
-            }
-        }
+      steps {
+        git credentialsId: 'github_seccred', url: 'https://github.com/Karthikeyan-2004/jenkins_ci_cd.git'
+      }
+    }
 
     stage('Install Dependencies') {
       steps {
-        dir('react_app'){
+        dir('react_app') {
           sh 'npm install'
         }
       }
@@ -22,7 +26,7 @@ pipeline {
 
     stage('Build') {
       steps {
-        dir('react_app'){
+        dir('react_app') {
           sh 'npm run build'
         }
       }
@@ -30,26 +34,36 @@ pipeline {
 
     stage('Test') {
       steps {
-        dir('react_app'){
+        dir('react_app') {
           sh 'npm test -- --watchAll=false'
+        }
+      }
+    }
+
+    stage('Docker Build & Push') {
+      steps {
+        script {
+          docker.build(env.DOCKER_IMAGE, 'react_app/')
+          docker.withRegistry('https://index.docker.io/v1/', 'docker') {
+            docker.image(env.DOCKER_IMAGE).push('latest')
+          }
         }
       }
     }
 
     stage('Deploy') {
       steps {
-        echo 'Simulating Deployment...'
-        // Replace with actual deploy script or commands
+        echo 'Deployment simulated or handled by next system.'
       }
     }
   }
 
   post {
     success {
-      echo 'Build and Deploy Successful!'
+      echo 'CI/CD Pipeline executed successfully!'
     }
     failure {
-      echo 'Build Failed!'
+      echo 'Pipeline failed!'
     }
   }
 }
